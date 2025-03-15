@@ -1,0 +1,173 @@
+PostgreSQl
+
+Relations Database - It effeciently retirves data from those tables, in particular where there are multiple tables
+
+Database - contains one or more tables 
+Relation or table - contains tuples and attributes 
+Tuples or row - a set of field which generall represent an object.
+Attribute also column.
+
+Database model/Schema is a contract- is the app of data model when used in conjuction with databases management system
+
+Sorting with Order by - You can add an ORDER BY clause to SELECT statements to get the results sorted in ascending or descending order
+
+ - SELECT * FROM users ORDER BY email;
+
+Like clause - We can do wildcard matching in a WHERE clause using the LIKE operator
+     - SELECT * FROM users WHERE name LIKE '%e%';
+
+- is useful for mining data but abit slow compared to Where
+    
+
+Limit/OFFSET clauses
+ - We can request the first "n" rows, or the first "n" rows after skipping some rows. 
+ - The WHERE and ORDER BY clauses happen *before* the LIMIT / OFFSET are applied.
+ - The OFFSET starts from row 0
+
+    - SELECT * FROM users ORDER BY email DESC LIMIT 2;
+    - SELECT * FROM users ORDER BY email OFFSET 1 LIMIT 2;
+
+Counting Rows with SELECT - You can request to receive the count of the rows that would be retrieved instead of the rows
+    - SELECT COUNT(*) FROM users;
+    - SELECT COUNT(*) FROM users WHERE email='csev@umich.edu';
+
+
+
+Character sets are Very Important
+id is (Serial) - an Automated_increment
+
+Tress and Hashes are thee most known
+- Trees work on Exact match up, sorting, range look-up and prefix
+    Indexes are actually good for above
+
+- Hashes is for computation
+    They are way better than loging the only problem with ehm they are only good for exact match(GUId)
+
+Also learned abit and installed DBeaver
+
+ Command in linux wget or curl are the same thing just for dff OS's - they grab data from url and copy that file into your Library
+
+ \copy is a Psql command.
+ \q is to Quit.
+
+
+
+
+ # Main troube now
+
+ On my Serial field/auto increment seems to be giving me a problem
+ - It complins about Connection being closed
+
+ - Managed to solve it by closing then re-opening Dbeaver, and i think it does this might have refreshed saw even Dr chuck getting same problems
+
+ - Now is the copying from the library to table
+
+
+
+ Defining shared hosting
+- shared database hosting is the process of running PostgreSQL clusters for the benifit of third parties (henceforth called customers) by a DBMS management authority (the hosting provider). Customers have no organizational relationship to each other but each one has a relationship to the hosting provider. Customers typically require complete control over a small number of databases but do not want to manage their own PostgreSQL cluster. Sharing the resources of a single cluster system among many customers is economically attractive.
+
+Approach 1
+- Manage cluster only via access to a super user account
+    - no permanent modification of pg_hba.conf etc. required
+    - central managing system can manage several clusters without the need for additional control channels
+- Customers cannot directly create new roles and databases
+- Each customer database is given an associated main user
+    - acting as a database local super user
+    - typically creates and owns all objects
+- The can be a number of additional users per database
+    - Rights of these users are granted by the main user
+
+
+pg_hba.conf
+We allow TCP/IP access to all databases in the cluster using md5 authentication from the local hosting network. A role can only login if it is member of a role that has the same name as the database.
+
+template1
+We modify template1 to revoke all rights from "PUBLIC" to the public schema, to prevent access to the public schema of indiviudial customer databases by other customers. Also we add support for PL/PGSQL.
+
+- psql -U postgres template1 -f - << EOT
+
+- REVOKE ALL ON DATABASE template1 FROM public;
+- REVOKE ALL ON SCHEMA public FROM public;
+- GRANT ALL ON SCHEMA public TO postgres;
+- CREATE LANGUAGE plpgsql;
+
+If you deem it acceptable to break certain PostgreSQL management applications (pgadmin, phppgadmin, parts of psql's functionality), then you could also revoke some more rights from pg_catalog to "resolve" problem 1 in the last section of this document:
+
+psql -U postgres template1 -f - << EOT
+
+REVOKE ALL ON pg_user FROM public;
+REVOKE ALL ON pg_roles FROM public;
+REVOKE ALL ON pg_group FROM public;
+REVOKE ALL ON pg_authid FROM public;
+REVOKE ALL ON pg_auth_members FROM public;
+
+REVOKE ALL ON pg_database FROM public;
+REVOKE ALL ON pg_tablespace FROM public;
+REVOKE ALL ON pg_settings FROM public;
+
+
+- Creating a new database + main user
+We create a role without any special access rights named after our planned database name and a login role for our main user that becomes a member of the former role. Then we create the database with the main user as its owner. Finally we grant all rights to the public schema in the new database to the main user
+
+psql -U postgres template1 -f - <<EOT
+
+CREATE ROLE <DBNAME> NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN;
+CREATE ROLE <DBMAINUSER> NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN ENCRYPTED PASSWORD '<DBMAINUSERPASS>';
+GRANT <DBNAME> TO <DBMAINUSER>;
+CREATE DATABASE <DBNAME> WITH OWNER=<DBMAINUSER>;
+REVOKE ALL ON DATABASE <DBNAME> FROM public;
+
+- Create an additional user
+psql -U postgres <DBNAME> -f - <<EOT
+
+CREATE ROLE <DBEXTRAUSER> NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN ENCRYPTED PASSWORD '<DBEXTRAUSERPASS>';
+GRANT USAGE ON SCHEMA public TO <DBEXTRAUSER>;
+GRANT CONNECT,TEMPORARY ON DATABASE <DBNAME> TO <DBEXTRAUSER>;
+GRANT <DBNAME> TO <DBEXTRAUSER>;
+
+
+- Remove an additional user
+psql -U postgres <DBNAME> -f - <<EOT
+
+-- REMOVE ALL PERMISSIONS FROM ALL OBJECTS OWNED BY DBEXTRAUSER
+-- TERMINATE CONNECTIONS OF DBEXTRAUSER
+REASSIGN OWNED BY <DBEXTRAUSER> TO <DBMAINUSER>;
+DROP ROLE <DBEXTRAUSER>
+
+
+- Remove a database + main user
+psql -U postgres template1 -f - <<EOT
+
+-- TERMINATE CONNECTIONS OF ALL USERS CONNECTED TO <DBNAME>
+DROP DATABASE <DBNAME>;
+DROP ROLE <DBMAINUSER>
+DROP ROLE <DBNAME>
+
+
+CONSTRAINTS
+
+Data types are a way to limit the kind of data that can be stored in a table. To that end, SQL allows you to define constraints on columns and tables. Constraints give you as much control over the data in your tables as you wish.
+
+
+Check Constraints 
+A check constraint is the most generic constraint type. It allows you to specify that the value in a certain column must satisfy a Boolean (truth-value) expression
+
+Not-Null Constraints 
+A not-null constraint simply specifies that a column must not assume the null value
+
+Tip
+In most database designs the majority of columns should be marked not null.
+
+Unique Constraints 
+Unique constraints ensure that the data contained in a column, or a group of columns, is unique among all the rows in the table
+
+ Primary Keys 
+A primary key constraint indicates that a column, or group of columns, can be used as a unique identifier for rows in the table. This requires that the values be both unique and not null.
+
+ Foreign Keys 
+A foreign key constraint specifies that the values in a column (or a group of columns) must match the values appearing in some row of another table. We say this maintains the referential integrity between two related tables.
+
+Exclusion Constraints 
+Exclusion constraints ensure that if any two rows are compared on the specified columns or expressions using the specified operators, at least one of these operator comparisons will return false or null. 
+
