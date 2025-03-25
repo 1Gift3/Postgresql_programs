@@ -204,3 +204,14 @@ On DELETE Choices.
 N.B - DR Chuck uses this alot as it keeps data models clean and tidy.
 * Set NULL - sets the foreign key columns in the child rows to null
 
+
+
+Many to Many 
+
+We need to add a connection table with two foreign keys
+There is usually no separate primary key
+
+Complexity Enable specified
+- Complexity makes speed possible and allows you to get very fast results as data size grows
+- By normalising the data and linking it with integer key the overrall amount of data which relational database must scan is for lower than if the data were simply flattened out.
+
