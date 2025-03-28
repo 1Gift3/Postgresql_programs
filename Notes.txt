@@ -171,6 +171,11 @@ A foreign key constraint specifies that the values in a column (or a group of co
 Exclusion Constraints 
 Exclusion constraints ensure that if any two rows are compared on the specified columns or expressions using the specified operators, at least one of these operator comparisons will return false or null. 
 
+
+
+
+
+
 Building Data Model 
 
 - Basic rule, Dont put the same string data in twice - use a relationship instead.
@@ -189,12 +194,22 @@ Three Kinds of Keys
  * A Foreign key is whne a table has a column containing a key that points to the primary key of another table.
  * It is very god - when all primary keys are integer, then all foreign keys are integers.
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  The JOIN operation
  - Links across several table as part of select, kind of an extended select but extends across a number of tables.
  - You must tell the join how to use the keys that make the connection between tables using an ON clause
 
  N.B - You can express a join and its called a cross Join..It JOIns everything
 INNER join means take th e things that match
+
+
 
 The on delete cascade means delete parent row.
 
@@ -203,6 +218,9 @@ On DELETE Choices.
 * Cascade - Adjust child rows by removing or adapting to maintain consistency
 N.B - DR Chuck uses this alot as it keeps data models clean and tidy.
 * Set NULL - sets the foreign key columns in the child rows to null
+
+
+
 
 
 
