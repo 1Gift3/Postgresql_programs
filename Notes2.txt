@@ -1,0 +1,65 @@
+We can adjust our Schema
+- After table for drop column ooops
+
+Reading commands from a file 
+\;
+
+Setting default values
+- We can save some code by auto- populating date fields when a row is invented 
+- we will auto-set on updates later 
+
+Timestamps - best Practices 
+
+- Store time stamps with timezones
+- prefer utc for stored time stamps
+- convert to local time zone when retireving
+
+        SELECT NOW(), NOW() AT TIME ZONE 'UTC', NOW() AT TIME ZONE 'HST'
+
+Casting to different types
+- We use the phrase 'casting' to mean convert from one type to another
+- Postgresql has several forms of casting
+
+e.i its a type conversion       
+
+Using date_truncl()
+- Sometimes we want to discord some of the accuracy that is in a timelapse
+
+N.B Not all equivalent querirs have the same perfomance
+
+Reducing the Result set
+- Distinct only returns unique rows in a result set- and row will only appear once
+- Distinct on limits duplicate removal to a set of columns
+- Group by is combined with aggregate function like count(), MAX(), SUM(), AVE()
+
+Subquery
+A qury within an query
+- Can use a value or set of values in a query that are computed by another query
+Concurrency
+- Databases are designed to accept SQL commands from a variety of sources simultaneously and make ehm atomically 
+
+Transactions and Atomcity
+- To implement atomicity, POSTGRESQL "Locks" areas before it starts an SQL command that might change an area of the Databases 
+- All other access to that area must wait until the area is unlocked
+
+Single SQL Statements are atomically- All the inserts will work and get a unique primary key 
+- Which account gets which keey is not predictable
+
+Compound Statements 
+- There are statements which do more than one thing in one state for effeciency and Concurrency
+
+On conflict. (Like Try and Except in python)
+- Sometimes you "bump into" a constraint on purpose.
+
+
+Stored procedures
+- A stored procedure is a bit of reusable code that runs inside of the database server
+- Technically there are multiple languages choices but just use "plpqsql"
+- Generally quiet non - portable
+- Usually the goat is to have fewer SQL statements 
+
+YOu must have strong means to use ehm
+- Major perfomance problem
+- Harder to test/modify
+- No database portability
+- some rate that must be enforced
