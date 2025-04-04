@@ -2,7 +2,7 @@
 # .\activate.ps1
 # My issue i was not putting the Dot
 
-# Realised i ddnt have jinja which i had to install learn to install rather
+# Realised i ddn't have a jinja which i had to install learn to install rather
 
 from fastapi import FastAPI, BackgroundTasks, HTTPException, Request, Depends
 from fastapi.responses import HTMLResponse
