@@ -192,7 +192,7 @@ Three Kinds of Keys
 2. Logical key - what the outside world uses for look up.
 3. Foreign Key - Generally an integer key pointing to a row in another table.
  * A Foreign key is when a table has a column containing a key that points to the primary key of another table.
- * It is very god - when all primary keys are integer, then all foreign keys are integers.
+ * It is very good - when all primary keys are integer, then all foreign keys are integers.
 
  
  
