@@ -4,7 +4,7 @@ Relations Database - It effeciently retirves data from those tables, in particul
 
 Database - contains one or more tables 
 Relation or table - contains tuples and attributes 
-Tuples or row - a set of field which generall represent an object.
+Tuples or row - a set of field which generally represent an object.
 Attribute also column.
 
 Database model/Schema is a contract- is the app of data model when used in conjuction with databases management system
@@ -12,9 +12,11 @@ Database model/Schema is a contract- is the app of data model when used in conju
 Sorting with Order by - You can add an ORDER BY clause to SELECT statements to get the results sorted in ascending or descending order
 
  - SELECT * FROM users ORDER BY email;
+ 
 
 Like clause - We can do wildcard matching in a WHERE clause using the LIKE operator
      - SELECT * FROM users WHERE name LIKE '%e%';
+
 
 - is useful for mining data but abit slow compared to Where
     
@@ -27,10 +29,10 @@ Limit/OFFSET clauses
     - SELECT * FROM users ORDER BY email DESC LIMIT 2;
     - SELECT * FROM users ORDER BY email OFFSET 1 LIMIT 2;
 
+
 Counting Rows with SELECT - You can request to receive the count of the rows that would be retrieved instead of the rows
     - SELECT COUNT(*) FROM users;
     - SELECT COUNT(*) FROM users WHERE email='csev@umich.edu';
-
 
 
 Character sets are Very Important
@@ -41,14 +43,17 @@ Tress and Hashes are thee most known
     Indexes are actually good for above
 
 - Hashes is for computation
-    They are way better than loging the only problem with ehm they are only good for exact match(GUId)
+    They are way better than loging, the only problem with ehm they are only good for exact match(GUId)
 
-Also learned abit and installed DBeaver
+* Also learned abit and installed DBeaver
 
  Command in linux wget or curl are the same thing just for dff OS's - they grab data from url and copy that file into your Library
 
  \copy is a Psql command.
  \q is to Quit.
+
+
+
 
 
 
