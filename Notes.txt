@@ -1,34 +1,31 @@
 PostgreSQl
 
-Relations Database - It effeciently retirves data from those tables, in particular where there are multiple tables
+Relations Database - It effeciently retrieves data from those tables, in particular where there are multiple tables
 
 Database - contains one or more tables 
 Relation or table - contains tuples and attributes 
 Tuples or row - a set of field which generally represent an object.
 Attribute also column.
 
-Database model/Schema is a contract- is the app of data model when used in conjuction with databases management system
+Database model/Schema is a contract- is the app of a data model when used in conjuction with databases management system
 
 Sorting with Order by - You can add an ORDER BY clause to SELECT statements to get the results sorted in ascending or descending order
 
  - SELECT * FROM users ORDER BY email;
- 
 
 Like clause - We can do wildcard matching in a WHERE clause using the LIKE operator
      - SELECT * FROM users WHERE name LIKE '%e%';
-
 
 - is useful for mining data but abit slow compared to Where
     
 
 Limit/OFFSET clauses
  - We can request the first "n" rows, or the first "n" rows after skipping some rows. 
- - The WHERE and ORDER BY clauses happen *before* the LIMIT / OFFSET are applied.
  - The OFFSET starts from row 0
+ - The WHERE and ORDER BY clauses happen *before* the LIMIT / OFFSET are applied.
 
     - SELECT * FROM users ORDER BY email DESC LIMIT 2;
     - SELECT * FROM users ORDER BY email OFFSET 1 LIMIT 2;
-
 
 Counting Rows with SELECT - You can request to receive the count of the rows that would be retrieved instead of the rows
     - SELECT COUNT(*) FROM users;
@@ -40,14 +37,14 @@ id is (Serial) - an Automated_increment
 
 Tress and Hashes are thee most known
 - Trees work on Exact match up, sorting, range look-up and prefix
-    Indexes are actually good for above
+    Indexes are actually good for the above
 
-- Hashes is for computation
+- Hashes is good for computation
     They are way better than loging, the only problem with ehm they are only good for exact match(GUId)
 
 * Also learned abit and installed DBeaver
 
- Command in linux wget or curl are the same thing just for dff OS's - they grab data from url and copy that file into your Library
+ Command in linux * wget or curl * are the same thing just for dff OS's - they grab data from url and copy that file into your Library
 
  \copy is a Psql command.
  \q is to Quit.
@@ -57,8 +54,7 @@ Tress and Hashes are thee most known
 
 
 
-
- # Main troube now
+ # Main trouble now
 
  On my Serial field/auto increment seems to be giving me a problem
  - It complins about Connection being closed
