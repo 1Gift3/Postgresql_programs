@@ -57,9 +57,9 @@ Tress and Hashes are thee most known
  # Main trouble now
 
  On my Serial field/auto increment seems to be giving me a problem
- - It complins about Connection being closed
+ - It complains about Connection being closed
 
- - Managed to solve it by closing then re-opening Dbeaver, and i think it does this might have refreshed saw even Dr chuck getting same problems
+ - Managed to solve it by closing, then re-opening Dbeaver, and i think it does this might have refreshed saw even Dr chuck getting same problems
 
  - Now is the copying from the library to table
 
@@ -81,11 +81,12 @@ Approach 1
 
 
 pg_hba.conf
-We allow TCP/IP access to all databases in the cluster using md5 authentication from the local hosting network. A role can only login if it is member of a role that has the same name as the database.
+We allow TCP/IP access to all databases in the cluster using md5 authentication from the local hosting network. A role can only login if it is a member of a role that has the same name as the database.
 
 template1
 We modify template1 to revoke all rights from "PUBLIC" to the public schema, to prevent access to the public schema of indiviudial customer databases by other customers. Also we add support for PL/PGSQL.
 
+* cOMMAND to rus SQL Scripts or commands via *
 - psql -U postgres template1 -f - << EOT
 
 - REVOKE ALL ON DATABASE template1 FROM public;
