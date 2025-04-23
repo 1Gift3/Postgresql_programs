@@ -1,5 +1,13 @@
 import psycopg2
 
+# WHAT
+# import allows python code to inteact with Postgresql database sending commands getting data back etc
+# create table() : connnects to a local Postgre database named studentdb
+# - crates a table called students with fields
+# - This only defines the functions but calls not the code
+# function insert_data(): prompts the user for student details, inserts that data into students and commits and close the connection
+# And insert_data() function : runs the script.
+
 def create_table():
     conn = psycopg2.connect(dbname="studentdb",user="postgres",password="Sindiso2017",host="localhost",port="5432")
     cur = conn.cursor()
@@ -21,15 +29,45 @@ def insert_data():
     conn.commit()
     conn.close()
 
-insert_data()
 
-# WHAT
-# import allows python code to inteact with Postgresql database sending commands getting data back etc
-# create table() : connnects to a local Postgre database named studentdb
-# - crates a table called students with fields
-# - This only defines the functions but calls not the code
-# function insert_data(): prompts the user for student details, inserts that data into students and commits and close the connection
-# And insert_data() function : runs the script.
+
+
+# fields : sets up a dictionary mapping numbers to database fields and the corresponding input prompt
+# users chooses field to update
+# validates and processes update : if the users choice is alid, prompts for new value, prepares a parameterized SQL update statement to prevent SQL injection and executes the update
+# then saves the change to database and closes connection.
+
+def update_data():
+    student_id = input("Enter id of the student to be updated")
+    conn = psycopg2.connect(dbname="studentdb",user="postgres",password="Sindiso2017",host="localhost",port="5432")
+    cur = conn.cursor()
+    fields = {
+        "1": ("name", "Enter the new name"),
+        "2" : ("address", "Enter the new address"),
+        "3" : ("age", "Enter the new age"),
+        "4" : ("number", "Enter the new number")
+    }
+    print("Which field would you like to update")
+    for key in fields: 
+        print(f"{key}:{fields[key][0]}")
+    field_choice = input("Enter the number of the field you want to update:")    
+    
+    if field_choice in fields:
+        field_name, prompt = fields[field_choice]
+        new_value = input(prompt)
+        sql = f"update students set {field_name}= %s where student_id=%s"
+        cur.execute(sql,(new_value,student_id))
+        print(f"{field_name} updated successfully")
+    else:
+        print("Invalid choice")    
+
+    conn.commit()
+    conn.close()
+
+update_data()
+
+
+
 
 
 
