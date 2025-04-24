@@ -29,8 +29,30 @@ def insert_data():
     conn.commit()
     conn.close()
 
+def delete_data():
+    student_id = input("Enter the ID of the student you want to delete:")
+    conn = psycopg2.connect(dbname="studentdb",user="postgres",password="Sindiso2017",host="localhost",port="5432")
+    cur = conn.cursor()
 
 
+    cur.execute("select * from students where student_id=%s",(student_id,))
+    student = cur.fetchone()            
+
+    if student:
+        print(f"Student to be deleted: ID{student[0]}, Name: {student[1]}, Address: {student[2]}, Age: {student[3]} ")
+        choice = input("Are you sure you want to delete the student? (yes/no)")
+        if choice.lower() =="yes":
+            cur.execute("delete from students where student_id=%s", (student_id,))
+            print("Student record deleted")
+        else:
+            print("Deletion cancelled")
+    else:
+        print ("Invalid choice")
+
+    conn.commit()
+    conn.close()
+
+       
 
 # fields : sets up a dictionary mapping numbers to database fields and the corresponding input prompt
 # users chooses field to update
@@ -64,7 +86,44 @@ def update_data():
     conn.commit()
     conn.close()
 
-update_data()
+def read_data():
+    conn = psycopg2.connect(dbname="studentdb",user="postgres",password="Sindiso2017",host="localhost",port="5432")
+    cur = conn.cursor()
+    cur.execute("select * from students;")
+    students = cur.fetchall()
+    for student in students:
+        print(f"ID: {student[0]}, Name: {student[1]}, Address: {student[2]}, Age: {student[3]} ")
+    conn.close()    
+
+while True:
+    print("\n Welcome to the student database management system")
+    print("1. Create Table")
+    print("2. Insert Data")
+    print("3. Read Data")
+    print("4. Update Data")
+    print("5. Delete Data")
+    print("6. Exit")
+    choice = input ("Enter your choice (1-6): ")
+    if choice ==1:
+        create_table()
+    elif choice=='2':
+        insert_data()
+    elif choice=="3":
+        read_data()
+    elif choice=="4":    
+        update_data()
+    elif choice=="5":
+        delete_data()
+    elif choice=="6":
+        break 
+
+    else:
+        print ("Invalid choice kindly enter a number 1-6")
+
+
+
+
+
 
 
 
