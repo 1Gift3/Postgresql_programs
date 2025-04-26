@@ -7,8 +7,8 @@
 # buttons : a new frame is created to hold thee buttons and its places in the second row
 # then root.mainloop() : starts the Tkinter event loop
 
-
 from tkinter import * 
+from tkinter import ttk
 
 root = Tk()
 root.title("Student management system")
@@ -40,6 +40,43 @@ Button(button_frame,text="Create Data").grid(row=0,column=0, padx=5)
 Button(button_frame,text="Add Data").grid(row=0,column=1, padx=5)
 Button(button_frame,text="Update Data").grid(row=0,column=2, padx=5)
 Button(button_frame,text="Delete Data").grid(row=0,column=3, padx=5)
+
+
+# ttk create a table like gui element with scrollable functionality
+#  frame(root) creates a frame inside the main window, positions it in the grid layout at row 2, column 0 with some padding and resizing (sticky="nswe")
+# we then add a scroll bar to the right side of the tree_frame and the scrollbar will fill the vertical space
+# we also create a treeview widget which is like a table or list, connecting it to the scrollbar so it can scroll vertically and selectmode = "browse" means only one row can be selected at a time
+# we then define table columns specifically 5 custom columns for the Treeview : ID, Names etc
+# - hiding along the default column #0 and defining the alighment and width for each column
+# headers are the set, setting visible column names in the header row if the table
+
+
+tree_frame = Frame(root)
+tree_frame.grid(row=2, column=0,padx=10,sticky="nsew")
+
+tree_scroll = Scrollbar(tree_frame)
+tree_scroll.pack(side=RIGHT,fill=Y)
+
+tree =ttk.Treeview(tree_frame,yscrollcomman=tree_scroll.set,selectmode="browse")
+tree.pack()
+tree_scroll.config(command=tree.yview)
+
+
+tree['columns']=("student_id","name","address","age","number")
+tree.column("#0",width=0,stretch=NO)
+tree.column("student_id", anchor=CENTER,width=80)
+tree.column("name", anchor=CENTER,width=120)
+tree.column("address", anchor=CENTER,width=120)
+tree.column("age", anchor=CENTER,width=50)
+tree.column("number", anchor=CENTER,width=120)
+
+tree.heading("student_id",text="ID",anchor=CENTER)
+tree.heading("name",text="Name",anchor=CENTER)
+tree.heading("address",text="Address",anchor=CENTER)
+tree.heading("age",text="Age",anchor=CENTER)
+tree.heading("number",text="Phone number",anchor=CENTER)
+
+
 
 
 
