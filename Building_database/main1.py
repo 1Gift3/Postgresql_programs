@@ -9,6 +9,7 @@
 
 from tkinter import * 
 from tkinter import ttk
+import psycopg2
 
 def run_query(query,parameters=()):
     conn = psycopg2.connect(dbname="studentdb",user="postgres",password="Sindiso2017",host="localhost",port="5432")
@@ -17,14 +18,22 @@ def run_query(query,parameters=()):
     try:
         cur.execute(query,parameters)
         if query.lower().startswith("select"):
-            query_reult = cur.fetchall()
+            query_result = cur.fetchall()
         conn.commit()
     except psycopg2.Error as e:
         messagebox.showerror("Database Error",str(e))
     finally:
         cur.close()
         conn.close()
-    return query_result   
+    return query_result 
+
+def refresh_treeview():
+    for item in tree.get_children():
+        tree.delete(item)
+    records = run_query("select * from students;")
+    for record in records:
+        tree.insert('',END,values=record)
+
 
 root = Tk()
 root.title("Student management system")
@@ -95,7 +104,8 @@ tree.heading("number",text="Phone number",anchor=CENTER)
 
 
 
-
+refresh_treeview()
+refresh_treeview()
 root.mainloop()
 
 

@@ -1,0 +1,3 @@
+09 May -
+
+addressed a TypeError: 'NoneType' object is not iterable that occurred when trying to loop through database query results in a Tkinter GUI. The issue stemmed from a typo in the run_query function: the variable query_result was mistakenly written as query_reult, causing the function to return None instead of the fetched records. This broke the refresh_treeview() function, which expected a list. We fixed the typo, ensuring the correct variable was returned, and added optional safety checks for robustness.
